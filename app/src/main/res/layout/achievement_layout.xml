@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="标题000000000000000000000000000000000"
+        android:id="@+id/Achievement_Title"
+        android:textSize="25sp"
+        android:textColor="#61615e"
+
+        android:singleLine="true"
+        android:enabled="false"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/Achievement_Cost" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="描述：1111111111111111111111111111111111111111111111111111111111111"
+        android:id="@+id/Achievement_Describe"
+        android:layout_below="@+id/Achievement_Title"
+        android:layout_alignParentStart="true"
+        android:singleLine="false"
+        android:maxHeight="55dp"
+        android:textSize="15dp"
+        android:layout_toStartOf="@+id/Achievement_Cost" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="50min"
+        android:id="@+id/Achievement_Cost"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_alignParentRight="false"
+        android:layout_alignParentLeft="false"
+        android:textSize="20dp"
+        android:layout_above="@+id/Achievement_Describe"
+        android:textColor="#f0d3a7" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button"
+        android:layout_alignTop="@+id/Achievement_Describe"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/Achievement_Describe" />
+
+</RelativeLayout>

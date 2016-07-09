@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">TimeBank</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="btn_save">存入</string>
+    <string name="btn_use">使用</string>
+    <string name="btn_off">停止</string>
+    <string name="ahievement_Describe">描述:</string>
+    <string name="ahievement_Title">标题:</string>
+    <string name="ahievement_Finish">完成后得到的时间:</string>
+    <string name="minute">分钟</string>
+    <string name="every">每</string>
+    <string name="day">天可以做</string>
+    <string name="times">次</string>
+</resources>
