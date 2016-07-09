@@ -8,12 +8,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.yedazhixyz.timebank.Model.GlobalData;
 import org.yedazhixyz.timebank.Model.ProgramState;
 import org.yedazhixyz.timebank.R;
 import org.yedazhixyz.timebank.time_deal;
@@ -26,7 +28,7 @@ import java.util.TimerTask;
  * Created by KFEB4 on 2016/7/3.
  */
 //主要功能显示控制
-public class F_Timer extends F_super {
+public class F_Timer extends Fragment{
     public static final int FreshControl =0x1245;
     private static Handler mHandler;
     static TextView text;
@@ -38,10 +40,9 @@ public class F_Timer extends F_super {
     static final int NOTIFICATION_ID = 0x123;
     NotificationManager nm;
     boolean noticed=false;
-    public F_Timer(time_deal.PlaceholderFragment owner,ProgramState state){
-        super(owner);
-        this.state= state;
-        nm = (NotificationManager) owner.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+    public F_Timer(){
+        this.state = GlobalData.state;
+        state.ison=false;
     }
     private String getTimeExp(long time){
         String res="";
@@ -56,7 +57,7 @@ public class F_Timer extends F_super {
         return  res+time%60;
     }
     @Override
-    public  View onCreate(LayoutInflater inflater, ViewGroup container,
+    public  View onCreateView(LayoutInflater inflater, ViewGroup container,
                           Bundle savedInstanceState){
         View rootView;
 
@@ -73,17 +74,17 @@ public class F_Timer extends F_super {
         btn_use=   (Button) rootView.findViewById(R.id.btn_use);
         btn_stop=(Button) rootView.findViewById(R.id.btn_stop);
         text=(TextView) rootView.findViewById(R.id.section_label);
-        mHandler.sendEmptyMessage(FreshControl);
-        btn_save.setText(owner.getString(R.string.btn_save));
-        btn_use.setText(owner.getString(R.string.btn_use));
-        btn_stop.setText(owner.getString(R.string.btn_off));
-        btn_save.setOnClickListener(new click_Btn_Time(btn_save,5));
-        btn_use.setOnClickListener(new click_Btn_Time(btn_use,-1));
+        btn_save.setText(getString(R.string.btn_save));
+        btn_use.setText(getString(R.string.btn_use));
+        btn_stop.setText(getString(R.string.btn_off));
+        btn_save.setOnClickListener(new click_Btn_Time(btn_save,state.time_state.rate_savein));
+        btn_use.setOnClickListener(new click_Btn_Time(btn_use,state.time_state.rate_use));
         btn_stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 time.cancel();
-                state.time_state.isOn=false;
+                state.time_state.flag=0;
+                state.ison=false;
                 FreshControl();
             }
         });
@@ -92,15 +93,22 @@ public class F_Timer extends F_super {
     }
     //根据状态刷新控件信息
     public void FreshControl(){
-        text.setText(getTimeExp(time_deal.state.haveTime));
-        if (time_deal.state.haveTime>0)
-            text.setTextColor(owner.getResources().getColor(R.color.Poistive_Time,null));
+        text.setText(getTimeExp(state.haveTime));
+        if (state.haveTime>0)
+            text.setTextColor(getResources().getColor(R.color.Poistive_Time,null));
         else
-            text.setTextColor(owner.getResources().getColor(R.color.negative_Time,null));
-        if(state.time_state.isOn){
+            text.setTextColor(getResources().getColor(R.color.negative_Time,null));
+        if(state.time_state.flag!=ProgramState.keyWord.flag_off){
             btn_save.setVisibility(View.INVISIBLE);
             btn_use.setVisibility(View.INVISIBLE);
             btn_stop.setVisibility(View.VISIBLE);
+            if (!state.ison){
+                if (state.time_state.flag==ProgramState.keyWord.flag_savein){
+                    startTime(state.time_state.rate_savein);
+                }else if (state.time_state.flag==ProgramState.keyWord.flag_use){
+                    startTime(state.time_state.rate_use);
+                }
+            }
         }else{
             btn_save.setVisibility(View.VISIBLE);
             btn_use.setVisibility(View.VISIBLE);
@@ -109,8 +117,8 @@ public class F_Timer extends F_super {
     }
     private class click_Btn_Time implements View.OnClickListener{
 
-        int rate;
-        public click_Btn_Time(Button owner,int rate){
+        float rate;
+        public click_Btn_Time(Button owner,float rate){
             this.rate = rate;
         }
         @Override
@@ -120,43 +128,59 @@ public class F_Timer extends F_super {
                 btn= (Button)view;
             else
                 return;
-            if(state.time_state.isOn){//停止运行
+            if(state.ison){//停止运行
                 time.cancel();
-                state.time_state.isOn=false;
-                btn_save.setText(owner.getString(R.string.btn_save));
-                btn_use.setText(owner.getString(R.string.btn_use));
+                state.time_state.flag=0;
+                btn_save.setText(getString(R.string.btn_save));
+                btn_use.setText(getString(R.string.btn_use));
             }else{
-                time=new Timer();
-                state.time_state.isOn=true;
-                state.time_state.PreTime= time_deal.state.haveTime;
-                state.time_state.startTime= new Date().getTime();
-                time.scheduleAtFixedRate(new TimerTask() {
-                    @Override
-                    public void run() {
-                        time_deal.state.haveTime=state.time_state.PreTime+(new Date().getTime()-state.time_state.startTime)/(1000*rate);
-                        if(time_deal.state.haveTime<0){
-                            if (!noticed){
-                                Intent intent = new Intent(owner.getContext(),owner.getContext().getClass());
-                                PendingIntent pi = PendingIntent.getActivities(owner.getContext(),0, new Intent[]{intent},0);
-                                Notification notify = new Notification.Builder(owner.getContext())
-                                        .setAutoCancel(true)
-                                        .setContentText("您的使用时间已经透支！")
-                                        .setContentIntent(pi)
-                                        .setDefaults(Notification.DEFAULT_LIGHTS|Notification.DEFAULT_SOUND|Notification.DEFAULT_VIBRATE)
-                                        .setSmallIcon(R.drawable.icon)
-                                        .setContentTitle("TimeBank")
-                                        .build();
-                                nm.notify(NOTIFICATION_ID,notify);
-                                noticed=true;
-                            }
-                        }else
-                            noticed=false;
-                        mHandler.sendEmptyMessage(FreshControl);
-                    }
-                },0,1000);
-
+                startTime(rate);
             }
         }
     }
+    private  void startTime(float r){
+        time=new Timer();
+        if (r==state.time_state.rate_savein)
+            state.time_state.flag = ProgramState.keyWord.flag_savein;
+        else if (r==state.time_state.rate_use)
+            state.time_state.flag = ProgramState.keyWord.flag_use;
 
+        state.ison=true;
+        state.time_state.PreTime= state.haveTime;
+        state.time_state.startTime= new Date().getTime();
+        final float rate = r;
+        time.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                state.haveTime= (long) (state.time_state.PreTime+(new Date().getTime()-state.time_state.startTime)/(1000*rate));
+                if(state.haveTime<0){
+                    if (!noticed){
+                        if(nm==null)
+                            nm = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                        Intent intent = new Intent(getContext(),getContext().getClass());
+                        PendingIntent pi = PendingIntent.getActivities(getContext(),0, new Intent[]{intent},0);
+                        Notification notify = new Notification.Builder(getContext())
+                                .setAutoCancel(true)
+                                .setContentText("您的使用时间已经透支！")
+                                .setContentIntent(pi)
+                                .setDefaults(Notification.DEFAULT_LIGHTS|Notification.DEFAULT_SOUND|Notification.DEFAULT_VIBRATE)
+                                .setSmallIcon(R.drawable.icon)
+                                .setContentTitle("TimeBank")
+                                .build();
+                        nm.notify(NOTIFICATION_ID,notify);
+                        noticed=true;
+                    }
+                }else
+                    noticed=false;
+                state.save();
+                mHandler.sendEmptyMessage(FreshControl);
+            }
+        },0,1010);
+
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        state.save();
+    }
 }

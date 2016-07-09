@@ -15,11 +15,14 @@ public class ProgramState {
     public static class keyWord{
         public static final String filename="Config";
         public static final String HaveTime="HaveTime";
-        public static final String state_ison="state_ison";
+        public static final String state_flag="state_flag";
         public static final String state_starttime="state_starttime";
         public static final String state_rate_savein="state_rate_savein";
         public static final String state_rate_use="state_rate_use";
         public static final String state_PreTime="state_PreTime";
+        public static final int flag_off=0;
+        public static final int flag_savein=1;
+        public static final int flag_use=-1;
 
     }
     //自动从Preference数据中读取相关信息
@@ -32,7 +35,7 @@ public class ProgramState {
     public void getData(){
         haveTime = preferences.getLong(keyWord.HaveTime,0);
         time_state.PreTime=preferences.getLong(keyWord.state_PreTime,0);
-        time_state.isOn=preferences.getBoolean(keyWord.state_ison,false);
+        time_state.flag=preferences.getInt(keyWord.state_flag,0);
         time_state.startTime=preferences.getLong(keyWord.state_starttime,0);
         time_state.rate_savein=preferences.getFloat(keyWord.state_rate_savein,0);
         time_state.rate_use=preferences.getFloat(keyWord.state_rate_use,0);
@@ -40,8 +43,8 @@ public class ProgramState {
     }
     public void save(){
         editor.putLong(keyWord.HaveTime,haveTime);
-        editor.putLong(keyWord.HaveTime,time_state.PreTime);
-        editor.putBoolean(keyWord.state_ison,time_state.isOn);
+        editor.putLong(keyWord.state_PreTime,time_state.PreTime);
+        editor.putInt(keyWord.state_flag,time_state.flag);
         editor.putLong(keyWord.state_starttime,time_state.startTime);
         editor.putFloat(keyWord.state_rate_savein,time_state.rate_savein);
         editor.putFloat(keyWord.state_rate_use,time_state.rate_use);
@@ -50,15 +53,16 @@ public class ProgramState {
 
     //计时器有关的状态信息
     public class _timerSate {
-        public boolean isOn;
+        public int flag;//标志运行状态
         public long startTime;
-        public float rate_savein;
-        public float rate_use;
+        public float rate_savein=5;
+        public float rate_use=-1;
         public long PreTime;
     }
-    public long haveTime;
+    public boolean ison=false;
+    public long haveTime=0;
     public _timerSate time_state =new _timerSate();
-    private SharedPreferences preferences;
-    private SharedPreferences.Editor editor;
-    private Activity owner;
+    private SharedPreferences preferences=null;
+    private SharedPreferences.Editor editor=null;
+    private Activity owner=null;
 }

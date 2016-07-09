@@ -159,13 +159,13 @@ public class time_deal extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView;
+            View rootView=null;
 
             int kind=getArguments().getInt(ARG_SECTION_NUMBER);
 
 
             if (kind==0){
-                rootView= new F_Timer(this,state).onCreate(inflater, container,savedInstanceState);
+               // rootView= new F_Timer(this,state).onCreate(inflater, container,savedInstanceState);
             }else if (kind==1){
                 rootView= new F_Ach_List(this).onCreate(inflater, container,savedInstanceState);
             }else{
