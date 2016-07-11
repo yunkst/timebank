@@ -6,4 +6,5 @@ package org.yedazhixyz.timebank.Model;
  */
 public class GlobalData {
     public static ProgramState state;
+
 }

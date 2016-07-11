@@ -37,8 +37,8 @@ public class ProgramState {
         time_state.PreTime=preferences.getLong(keyWord.state_PreTime,0);
         time_state.flag=preferences.getInt(keyWord.state_flag,0);
         time_state.startTime=preferences.getLong(keyWord.state_starttime,0);
-        time_state.rate_savein=preferences.getFloat(keyWord.state_rate_savein,0);
-        time_state.rate_use=preferences.getFloat(keyWord.state_rate_use,0);
+        time_state.rate_savein=preferences.getFloat(keyWord.state_rate_savein,5);
+        time_state.rate_use=preferences.getFloat(keyWord.state_rate_use,-1);
 
     }
     public void save(){
