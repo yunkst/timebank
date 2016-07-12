@@ -59,7 +59,6 @@ public class ProgramState {
         public float rate_use=-1;
         public long PreTime;
     }
-    public boolean ison=false;
     public long haveTime=0;
     public _timerSate time_state =new _timerSate();
     private SharedPreferences preferences=null;

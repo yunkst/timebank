@@ -18,7 +18,6 @@ import android.widget.TextView;
 import org.yedazhixyz.timebank.Model.GlobalData;
 import org.yedazhixyz.timebank.Model.ProgramState;
 import org.yedazhixyz.timebank.R;
-import org.yedazhixyz.timebank.time_deal;
 
 import java.util.Date;
 import java.util.Timer;
@@ -40,9 +39,10 @@ public class F_Timer extends Fragment{
     static final int NOTIFICATION_ID = 0x123;
     NotificationManager nm;
     boolean noticed=false;
+    boolean ison = false;
     public F_Timer(){
         this.state = GlobalData.state;
-        state.ison=false;
+        ison=false;
     }
     private String getTimeExp(long time){
         String res="";
@@ -84,7 +84,7 @@ public class F_Timer extends Fragment{
             public void onClick(View view) {
                 time.cancel();
                 state.time_state.flag=0;
-                state.ison=false;
+                ison=false;
                 FreshControl();
             }
         });
@@ -102,7 +102,7 @@ public class F_Timer extends Fragment{
             btn_save.setVisibility(View.INVISIBLE);
             btn_use.setVisibility(View.INVISIBLE);
             btn_stop.setVisibility(View.VISIBLE);
-            if (!state.ison){
+            if (!ison){
                 if (state.time_state.flag==ProgramState.keyWord.flag_savein){
                     startTime(state.time_state.rate_savein);
                 }else if (state.time_state.flag==ProgramState.keyWord.flag_use){
@@ -128,13 +128,12 @@ public class F_Timer extends Fragment{
                 btn= (Button)view;
             else
                 return;
-            if(state.ison){//停止运行
+            if(ison){//停止运行
                 time.cancel();
                 state.time_state.flag=0;
-                btn_save.setText(getString(R.string.btn_save));
-                btn_use.setText(getString(R.string.btn_use));
             }else{
                 startTime(rate);
+                startSurfaceDraw();
             }
         }
     }
@@ -145,7 +144,7 @@ public class F_Timer extends Fragment{
         else if (r==state.time_state.rate_use)
             state.time_state.flag = ProgramState.keyWord.flag_use;
 
-        state.ison=true;
+        ison=true;
         state.time_state.PreTime= state.haveTime;
         state.time_state.startTime= new Date().getTime();
         final float rate = r;
@@ -181,6 +180,24 @@ public class F_Timer extends Fragment{
     @Override
     public void onPause() {
         super.onPause();
+        stopSurfaceDraw();
         state.save();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        startSurfaceDraw();
+    }
+
+    //开始绘制动画
+    private  void startSurfaceDraw(){
+
+
+    }
+    //停止绘制动画
+    private void stopSurfaceDraw(){
+
+    }
+
 }
