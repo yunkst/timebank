@@ -2,6 +2,10 @@ package org.yedazhixyz.timebank.Model;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by KFEB4 on 2016/7/8.
  * 用于存储程序运行时需要的状态信息（保持下一次启动恢复现场）
@@ -11,6 +15,9 @@ import android.content.SharedPreferences;
 //4.增加最大拥有量查看，5.修改按钮显示，绘制动画效果
 //
 public class ProgramState {
+    public interface StateListener{
+        public void run();
+    }
     //在永久数据中有关的关键字
     public static class keyWord{
         public static final String filename="Config";
@@ -42,6 +49,7 @@ public class ProgramState {
 
     }
     public void save(){
+        callChange();
         editor.putLong(keyWord.HaveTime,haveTime);
         editor.putLong(keyWord.state_PreTime,time_state.PreTime);
         editor.putInt(keyWord.state_flag,time_state.flag);
@@ -50,7 +58,17 @@ public class ProgramState {
         editor.putFloat(keyWord.state_rate_use,time_state.rate_use);
         editor.commit();
     }
-
+    //收听列表
+    public List<StateListener> listeners=new ArrayList<>();
+    //唤醒所有监听者
+    public void callChange(){
+        if (listeners.size()>0){
+            for (StateListener item:
+                 listeners) {
+                item.run();
+            }
+        }
+    }
     //计时器有关的状态信息
     public class _timerSate {
         public int flag;//标志运行状态

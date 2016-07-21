@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="org.yedazhixyz.timebank.time_deal"
+    tools:context=".Activity.time_deal"
     >
 
     <android.support.design.widget.AppBarLayout

@@ -9,7 +9,7 @@ import android.widget.SimpleAdapter;
 
 import org.yedazhixyz.timebank.Model.Achievement;
 import org.yedazhixyz.timebank.R;
-import org.yedazhixyz.timebank.time_deal;
+import org.yedazhixyz.timebank.Activity.time_deal;
 
 import java.util.ArrayList;
 import java.util.Date;

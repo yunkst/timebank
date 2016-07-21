@@ -1,4 +1,4 @@
-package org.yedazhixyz.timebank;
+package org.yedazhixyz.timebank.Activity;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import org.yedazhixyz.timebank.Fragment.F_Timer;
 import org.yedazhixyz.timebank.Model.GlobalData;
 import org.yedazhixyz.timebank.Model.ProgramState;
+import org.yedazhixyz.timebank.R;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //设置滑动页面每个页面的布局
 
         //getFragmentManager().beginTransaction().replace(R.id.timedeal,new F_Timer());
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

@@ -17,4 +17,10 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="title_activity_record">record</string>
+    <string name="startTime">开始时间</string>
+    <string name="beginHave">原始剩余</string>
+    <string name="nowHave">现在剩余</string>
+    <string name="diff">差值</string>
+    <string name="passedTime">经历时间</string>
+    <string name="Rate">兑换比例</string>
 </resources>

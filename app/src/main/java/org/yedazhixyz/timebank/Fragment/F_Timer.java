@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +18,7 @@ import android.widget.TextView;
 import org.yedazhixyz.timebank.Model.GlobalData;
 import org.yedazhixyz.timebank.Model.ProgramState;
 import org.yedazhixyz.timebank.R;
+import org.yedazhixyz.timebank.Tool.tool_time;
 
 import java.util.Date;
 import java.util.Timer;
@@ -44,18 +45,7 @@ public class F_Timer extends Fragment{
         this.state = GlobalData.state;
         ison=false;
     }
-    private String getTimeExp(long time){
-        String res="";
-        if (time>=0)
-            res= time/ (60) + ":";
-        else{
-            time*=-1;
-            res="-"+time/60+":";
-        }
-        if (time%60<10)
-            res+="0";
-        return  res+time%60;
-    }
+
     @Override
     public  View onCreateView(LayoutInflater inflater, ViewGroup container,
                           Bundle savedInstanceState){
@@ -85,6 +75,7 @@ public class F_Timer extends Fragment{
                 time.cancel();
                 state.time_state.flag=0;
                 ison=false;
+                state.save();
                 FreshControl();
             }
         });
@@ -93,7 +84,7 @@ public class F_Timer extends Fragment{
     }
     //根据状态刷新控件信息
     public void FreshControl(){
-        text.setText(getTimeExp(state.haveTime));
+        text.setText(tool_time.getTimePeriodExp(state.haveTime));
         if (state.haveTime>0)
             text.setTextColor(getResources().getColor(R.color.Poistive_Time,null));
         else
@@ -123,15 +114,12 @@ public class F_Timer extends Fragment{
         }
         @Override
         public void onClick(View view) {
-            Button btn;
-            if (view instanceof Button)
-                btn= (Button)view;
-            else
-                return;
             if(ison){//停止运行
                 time.cancel();
                 state.time_state.flag=0;
             }else{
+                state.time_state.PreTime= state.haveTime;
+                state.time_state.startTime= new Date().getTime();//初始化计时开始时间
                 startTime(rate);
                 startSurfaceDraw();
             }
@@ -139,15 +127,14 @@ public class F_Timer extends Fragment{
     }
     private  void startTime(float r){
         time=new Timer();
-        if (r==state.time_state.rate_savein)
-            state.time_state.flag = ProgramState.keyWord.flag_savein;
-        else if (r==state.time_state.rate_use)
-            state.time_state.flag = ProgramState.keyWord.flag_use;
-
+        if(state.time_state.flag==ProgramState.keyWord.flag_off) {
+            if (r == state.time_state.rate_savein)
+                state.time_state.flag = ProgramState.keyWord.flag_savein;
+            else if (r == state.time_state.rate_use)
+                state.time_state.flag = ProgramState.keyWord.flag_use;
+        }
         ison=true;
-        state.time_state.PreTime= state.haveTime;
-        state.time_state.startTime= new Date().getTime();
-        final float rate = r;
+       final float rate = r;
         time.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {

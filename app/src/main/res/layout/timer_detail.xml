@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<!--用于显示计时器的一些参数：开始时间，开始的剩余时间，当前的剩余时间，所用的剩余时间-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/startTime"
+        android:id="@+id/textView2"
+        style="@style/myHitText"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/beginHave"
+        android:id="@+id/textView3"
+        style="@style/myHitText"
+        android:layout_below="@+id/textView2"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/nowHave"
+        style="@style/myHitText"
+        android:id="@+id/textView10"
+        android:layout_below="@+id/textView3"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/myHitText"
+        android:text="@string/diff"
+        android:id="@+id/textView11"
+        android:layout_below="@+id/textView10"
+        android:layout_toStartOf="@+id/TV_N_rest" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/myHitText"
+        android:text="@string/passedTime"
+        android:id="@+id/textView12"
+        android:layout_below="@+id/textView11"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Rate"
+        android:id="@+id/textView13"
+        style="@style/myHitText"
+        android:layout_below="@+id/textView12"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/TV_startTime"
+        style="@style/myHitText"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/textView2"
+        android:text="TV_startTime" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TV_S_rest"
+        android:id="@+id/TV_S_rest"
+        style="@style/myHitText"
+        android:layout_below="@+id/TV_startTime"
+        android:layout_toEndOf="@+id/textView3" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TV_N_rest"
+        android:id="@+id/TV_N_rest"
+        style="@style/myHitText"
+        android:layout_below="@+id/textView3"
+        android:layout_toEndOf="@+id/textView10" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TV_differ"
+        android:id="@+id/TV_differ"
+        style="@style/myHitText"
+        android:layout_below="@+id/TV_N_rest"
+        android:layout_toEndOf="@+id/textView11" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TV_PassedTime"
+        android:id="@+id/TV_PassedTime"
+        style="@style/myHitText"
+        android:layout_below="@+id/TV_differ"
+        android:layout_toEndOf="@+id/textView12" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TV_Radio"
+        android:id="@+id/TV_Radio"
+        style="@style/myHitText"
+        android:layout_below="@+id/TV_PassedTime"
+        android:layout_toEndOf="@+id/textView13" />
+</RelativeLayout>

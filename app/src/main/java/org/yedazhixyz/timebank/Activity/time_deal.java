@@ -1,4 +1,4 @@
-package org.yedazhixyz.timebank;
+package org.yedazhixyz.timebank.Activity;
 
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +26,7 @@ import org.yedazhixyz.timebank.Fragment.F_Ach_List;
 import org.yedazhixyz.timebank.Fragment.F_Timer;
 import org.yedazhixyz.timebank.Model.Achievement;
 import org.yedazhixyz.timebank.Model.ProgramState;
+import org.yedazhixyz.timebank.R;
 
 public class time_deal extends AppCompatActivity {
 

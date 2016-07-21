@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.yedazhixyz.timebank.time_deal;
+import org.yedazhixyz.timebank.Activity.time_deal;
 
 /**
  * Created by KFEB4 on 2016/7/4.
